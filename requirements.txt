@@ -7,4 +7,5 @@ pandas
 numpy
 pydantic
 imblearn
+scipy
 warnings
