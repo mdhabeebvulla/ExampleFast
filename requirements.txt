@@ -6,6 +6,7 @@ sklearn
 pandas
 numpy
 pydantic
+imbalanced-learn
 imblearn
 scipy
 warnings
