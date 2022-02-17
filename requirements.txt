@@ -1,0 +1,10 @@
+uvicorn
+aiofiles
+fastapi
+python-multipart
+sklearn
+pandas
+numpy
+pydantic
+imblearn
+warnings
