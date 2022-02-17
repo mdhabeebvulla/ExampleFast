@@ -1,2 +1,2 @@
-# B17PGH
-Deploying IRIS model to Heroku
+
+Deploying Sample model to Heroku
