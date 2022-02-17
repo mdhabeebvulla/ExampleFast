@@ -9,8 +9,6 @@ from sklearn.pipeline import Pipeline  #creates a machine learning pipeline
 from sklearn.naive_bayes import MultinomialNB  #to apply Naive Bayes Classifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report  #accuracy metrics
 from sklearn.feature_extraction.text import CountVectorizer #for BoW
-import warnings
-warnings.simplefilter(action="ignore", category=FutureWarning)
 data = pd.read_csv('Entry_cleaned.csv')
 class Testdata(BaseModel):
     endpoint:str
