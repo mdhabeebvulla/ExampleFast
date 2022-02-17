@@ -9,21 +9,11 @@ from sklearn.pipeline import Pipeline  #creates a machine learning pipeline
 from sklearn.naive_bayes import MultinomialNB  #to apply Naive Bayes Classifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report  #accuracy metrics
 from sklearn.feature_extraction.text import CountVectorizer #for BoW
+import warnings
+warnings.simplefilter(action="ignore", category=FutureWarning)
 data = pd.read_csv('Entry_cleaned.csv')
 class Testdata(BaseModel):
     endpoint:str
-class Metric(BaseModel):
-    precision: PositiveFloat
-    recall: PositiveFloat
-    f1_score: PositiveFloat = Field(alias='f1-score')
-    support: PositiveFloat
-class Metric_Response(BaseModel):
-    negative: Metric = Field(alias='200')
-    positive: Metric = Field(alias='401')
-    accuracy: PositiveFloat
-    macro_average: Metric = Field(alias='macro avg')
-    weighted_average: Metric = Field(alias='weighted avg')
-
 def preprocess(endpoint: str) -> str:
     r = re.sub(r'{[^)]*}', '', endpoint)
     r = r.replace('/', ' ').replace('-', ' ')
@@ -45,11 +35,6 @@ ros = RandomUnderSampler(random_state=42)
 
 
 x_ros, y_ros = ros.fit_resample(x, y)
-print(type(x_ros))
-print(type(y_ros))
-
-print('Original dataset shape', Counter(y))
-print('Resample dataset shape', Counter(y_ros))
 df =pd.DataFrame({'path':x_ros.flatten(),'response':y_ros.flatten()})
 print(data.shape)
 print(df.shape) 
@@ -66,15 +51,8 @@ with open('classification_report.json', 'w') as j:
     json.dump(report, j)
 app = FastAPI()
 @app.post("/api/predict")
-def example(endp:Testdata):
+def predict_authorization(endp:Testdata):
     endpoint = endp.endpoint
     y_predt = nb_pipeline.predict([endpoint])
     yn = int(y_predt[0])
     return {'prediction': yn}
-
-@app.get("/api/metrics", response_model=Metric_Response)
-async def get_metrics():
-    with open('classification_report.json', 'r') as j:
-        metrics = json.load(j)
-
-    return metrics
