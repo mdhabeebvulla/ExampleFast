@@ -53,6 +53,8 @@ app = FastAPI()
 @app.post("/api/predict")
 def predict_authorization(endp:Testdata):
     endpoint = endp.endpoint
-    y_predt = nb_pipeline.predict([endpoint])
+    f=filter(str.isalpha,endpoint)
+    s1="".join(f)
+    y_predt = nb_pipeline.predict([s1])
     yn = int(y_predt[0])
     return {'prediction': yn}
